@@ -17,13 +17,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           appBarTheme: AppBarTheme(backgroundColor: Colors.transparent),
           fontFamily: GoogleFonts.montserrat().fontFamily,
-          primarySwatch: Colors.blue,
           scaffoldBackgroundColor: backgrondColorBlack,
-          backgroundColor: Colors.black,
-          textTheme: TextTheme(
+          textTheme: const TextTheme(
             bodyText1: TextStyle(color: Colors.white),
             bodyText2: TextStyle(color: Colors.white),
-          )),
+          ),
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
+              .copyWith(background: Colors.black)),
       home: MainScreen(),
     );
   }

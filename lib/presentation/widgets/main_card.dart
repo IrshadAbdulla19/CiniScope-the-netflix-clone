@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:netflix_demo/core/constansts/contsands.dart';
 
 class MainCardWidget extends StatelessWidget {
-  const MainCardWidget({
-    super.key,
-  });
-
+  MainCardWidget({super.key, required this.imgPath});
+  String imgPath;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -16,9 +14,7 @@ class MainCardWidget extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: kRadius,
             image: DecorationImage(
-                image: AssetImage(
-                    'assets/images/Suraj-Pe-Mangal-Bhari-movie-poster-release-date.jpg'),
-                fit: BoxFit.cover)),
+                image: NetworkImage(imgPath), fit: BoxFit.cover)),
       ),
     );
   }

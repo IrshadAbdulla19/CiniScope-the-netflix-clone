@@ -5,7 +5,8 @@ import 'package:netflix_demo/core/constansts/contsands.dart';
 
 class HomeNumberCardWidget extends StatelessWidget {
   final int index;
-  HomeNumberCardWidget({super.key, required this.index});
+  String imgPath;
+  HomeNumberCardWidget({super.key, required this.index, required this.imgPath});
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +25,7 @@ class HomeNumberCardWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius: kRadius,
                     image: DecorationImage(
-                        image: AssetImage(
-                            'assets/images/Suraj-Pe-Mangal-Bhari-movie-poster-release-date.jpg'),
-                        fit: BoxFit.cover)),
+                        image: NetworkImage(imgPath), fit: BoxFit.cover)),
               ),
             ],
           ),

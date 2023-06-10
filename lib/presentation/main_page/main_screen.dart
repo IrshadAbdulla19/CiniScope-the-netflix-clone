@@ -13,7 +13,7 @@ class MainScreen extends StatelessWidget {
     HomePage(),
     NewAndHotScreen(),
     FastLaughScreen(),
-    SearchScreen(),
+    ForSearchScreen(),
     DownloadScreen()
   ];
   @override

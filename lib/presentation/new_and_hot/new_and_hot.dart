@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:netflix_demo/core/colors/colors.dart';
 import 'package:netflix_demo/core/constansts/contsands.dart';
+import 'package:netflix_demo/domain/downloads/popular_for_downloads.dart';
+import 'package:netflix_demo/domain/now_playing/now_playing_api.dart';
 import 'package:netflix_demo/presentation/home/widgats/custom_button.dart';
 import 'package:netflix_demo/presentation/new_and_hot/widgets/coming_soon.dart';
 import 'package:netflix_demo/presentation/new_and_hot/widgets/everyonce_watching_widget.dart';
@@ -65,19 +67,58 @@ class NewAndHotScreen extends StatelessWidget {
   }
 
   Widget _buildComingSoon() {
-    return ListView.builder(
-      itemBuilder: (cntx, indx) {
-        return ComingSoonMainWidget();
+    return FutureBuilder(
+      future: getNowPlayingImgs(),
+      builder: (context, snapshot) {
+        return snapshot.hasData
+            ? ListView.builder(
+                itemBuilder: (cntx, indx) {
+                  String? date = snapshot.data?[indx].releaseDate;
+                  String? title = snapshot.data?[indx].title;
+                  String? content = snapshot.data?[indx].overview;
+                  String? imgPath = snapshot.data?[indx].backdropPath;
+                  return ComingSoonMainWidget(
+                    date: date,
+                    titile: title,
+                    content: content,
+                    imgPath: imgPath,
+                  );
+                },
+                itemCount: snapshot.data?.length,
+              )
+            : Center(
+                child: CircularProgressIndicator(
+                  color: kRedColor,
+                ),
+              );
       },
-      itemCount: 6,
     );
   }
 
   Widget _buildEveryonceWatching() {
-    return ListView.builder(
-        itemCount: 8,
-        itemBuilder: (cntx, indx) {
-          return EveryonceWatcingWidget();
-        });
+    return FutureBuilder(
+      future: popularForDownloads(),
+      builder: (context, snapshot) {
+        return snapshot.hasData
+            ? ListView.builder(
+                itemBuilder: (cntx, indx) {
+                  String? title = snapshot.data?[indx].title;
+                  String? content = snapshot.data?[indx].overview;
+                  String? imgPath = snapshot.data?[indx].backdropPath;
+                  return EveryonceWatcingWidget(
+                    title: title,
+                    content: content,
+                    imgPath: imgPath,
+                  );
+                },
+                itemCount: snapshot.data?.length,
+              )
+            : Center(
+                child: CircularProgressIndicator(
+                  color: kRedColor,
+                ),
+              );
+      },
+    );
   }
 }

@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:netflix_demo/core/api_constant.dart';
 import 'package:netflix_demo/core/colors/colors.dart';
 import 'package:netflix_demo/core/constansts/contsands.dart';
+import 'package:netflix_demo/domain/trending/trendig_api.dart';
+import 'package:netflix_demo/domain/trending/trending_model/result.dart';
 import 'package:netflix_demo/presentation/search/widgets/top_titile.dart';
 
 class SearchIdleWidget extends StatelessWidget {
@@ -12,20 +15,38 @@ class SearchIdleWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TopTextWidget(
-          titile: 'Top searches',
-        ),
         kheight,
         Expanded(
-          child: ListView.separated(
-              shrinkWrap: true,
-              itemBuilder: (cntx, indx) {
-                return ForTopSearchTile();
-              },
-              separatorBuilder: (cntx, indx) {
-                return kheight;
-              },
-              itemCount: 10),
+          child: FutureBuilder(
+            future: getTrendingImgs(),
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Result>> snapshot) {
+              return snapshot.hasData
+                  ? ListView.separated(
+                      shrinkWrap: true,
+                      itemBuilder: (cntx, indx) {
+                        String imagePath =
+                            "${snapshot.data![indx].backdropPath}";
+                        String titlePath = "${snapshot.data![indx].title}";
+                        return ForTopSearchTile(
+                          imagePath:
+                              "${imgBaseUrl}${snapshot.data![indx].backdropPath}",
+                          movieName: titlePath.isNotEmpty
+                              ? "${snapshot.data![indx].title}"
+                              : "Movie name",
+                        );
+                      },
+                      separatorBuilder: (cntx, indx) {
+                        return kheight;
+                      },
+                      itemCount: snapshot.data!.length)
+                  : Center(
+                      child: CircularProgressIndicator(
+                        color: kRedColor,
+                      ),
+                    );
+            },
+          ),
         )
       ],
     );
@@ -33,7 +54,11 @@ class SearchIdleWidget extends StatelessWidget {
 }
 
 class ForTopSearchTile extends StatelessWidget {
-  const ForTopSearchTile({super.key});
+  ForTopSearchTile(
+      {super.key, required this.imagePath, required this.movieName});
+
+  String imagePath;
+  String movieName;
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +70,17 @@ class ForTopSearchTile extends StatelessWidget {
           height: 100,
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage('assets/images/image_for_search.jpg'),
-                  fit: BoxFit.fill)),
+                  image: NetworkImage(imagePath), fit: BoxFit.fill)),
         ),
         Expanded(
-            child: Text(
-          'Movie name',
-          style: TextStyle(
-              color: kWhite, fontWeight: FontWeight.bold, fontSize: 20),
+            child: Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Text(
+            movieName,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+                color: kWhite, fontWeight: FontWeight.bold, fontSize: 20),
+          ),
         )),
         CircleAvatar(
           backgroundColor: kWhite,

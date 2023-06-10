@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:netflix_demo/core/api_constant.dart';
 import 'package:netflix_demo/core/colors/colors.dart';
+import 'package:netflix_demo/domain/downloads/popular_for_downloads.dart';
+import 'package:netflix_demo/domain/search/search_api.dart';
+import 'package:netflix_demo/domain/trending/trendig_api.dart';
 import 'package:netflix_demo/presentation/home/widgats/custom_button.dart';
 
 class MainCardBackWidget extends StatelessWidget {
@@ -7,39 +11,52 @@ class MainCardBackWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          height: 780,
-          width: double.infinity,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage('assets/images/home_page_bg_pic.jpg'),
-                  fit: BoxFit.cover)),
-        ),
-        Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 15.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                CoustomButtonWidget(
-                  icon: Icons.add,
-                  title: 'My List',
+    return FutureBuilder(
+      future: getTrendingImgs(),
+      builder: (context, snapshot) {
+        String? imgPaht = snapshot.data?[0].posterPath;
+        return snapshot.hasData
+            ? Stack(
+                children: [
+                  Container(
+                    height: 780,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: NetworkImage(
+                                "${imgBaseUrl}${imgPaht == null ? "/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg" : imgPaht}"),
+                            fit: BoxFit.cover)),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 15.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          CoustomButtonWidget(
+                            icon: Icons.add,
+                            title: 'My List',
+                          ),
+                          _playArrowButton(),
+                          CoustomButtonWidget(
+                            icon: Icons.info,
+                            title: 'Info',
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              )
+            : Center(
+                child: CircularProgressIndicator(
+                  color: kRedColor,
                 ),
-                _playArrowButton(),
-                CoustomButtonWidget(
-                  icon: Icons.info,
-                  title: 'Info',
-                ),
-              ],
-            ),
-          ),
-        )
-      ],
+              );
+      },
     );
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:netflix_demo/core/colors/colors.dart';
 import 'package:netflix_demo/core/constansts/contsands.dart';
+import 'package:netflix_demo/domain/trending/trendig_api.dart';
 
 import 'package:netflix_demo/presentation/home/widgats/main_card_backwidg.dart';
 import 'package:netflix_demo/presentation/home/widgats/numberd_titile_card.dart';
@@ -33,19 +34,17 @@ class HomePage extends StatelessWidget {
                   child: Stack(
                     children: [
                       ListView(
-                        children: const [
+                        children: [
                           MainCardBackWidget(),
-                          MainTitleCard(
-                            title: 'Released in the past years',
-                          ),
-                          MainTitleCard(
+                          MainTitleCard1(title: 'Released in the past years'),
+                          MainTitleCard2(
                             title: 'Tredning Now',
                           ),
                           NumberedTitleCard(),
-                          MainTitleCard(
+                          MainTitleCard3(
                             title: 'Tense Dramas',
                           ),
-                          MainTitleCard(
+                          MainTitleCard4(
                             title: 'South indian Cinema',
                           ),
                         ],

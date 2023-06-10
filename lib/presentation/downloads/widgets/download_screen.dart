@@ -1,8 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:netflix_demo/core/api_constant.dart';
 import 'package:netflix_demo/core/colors/colors.dart';
 import 'package:netflix_demo/core/constansts/contsands.dart';
+import 'package:netflix_demo/domain/downloads/popular_for_downloads.dart';
+import 'package:netflix_demo/domain/popular/result.dart';
+
 import 'package:netflix_demo/presentation/widgets/app_bar_widget.dart';
 
 class DownloadScreen extends StatelessWidget {
@@ -13,7 +17,7 @@ class DownloadScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: PreferredSize(
+        appBar: const PreferredSize(
             preferredSize: Size.fromHeight(50),
             child: AppBarWidget(
               title: 'Downloads',
@@ -24,7 +28,7 @@ class DownloadScreen extends StatelessWidget {
               return _widgetList[indx];
             },
             separatorBuilder: (cntx, indx) {
-              return SizedBox(
+              return const SizedBox(
                 height: 50,
               );
             },
@@ -35,11 +39,7 @@ class DownloadScreen extends StatelessWidget {
 class Section2 extends StatelessWidget {
   Section2({super.key});
 
-  var images = [
-    'assets/images/download.jpg',
-    'assets/images/shubh-mangal-zyada-saavdhan-movie-star-cast-release-date-poster.jpg',
-    'assets/images/Suraj-Pe-Mangal-Bhari-movie-poster-release-date.jpg'
-  ];
+  var images = [];
 
   @override
   Widget build(BuildContext context) {
@@ -58,35 +58,48 @@ class Section2 extends StatelessWidget {
           style: TextStyle(color: Colors.grey, fontSize: 16),
         ),
         SizedBox(
-          width: size.width,
-          height: size.width,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              CircleAvatar(
-                radius: size.width * 0.43,
-                backgroundColor: Colors.grey.withOpacity(0.5),
-              ),
-              DownloadsImageWidget(
-                image: images[0],
-                margin: EdgeInsets.only(left: 130),
-                angle: 20,
-                size: Size(size.width * 0.4, size.width * 0.68),
-              ),
-              DownloadsImageWidget(
-                image: images[1],
-                margin: EdgeInsets.only(right: 130),
-                angle: -20,
-                size: Size(size.width * 0.4, size.width * 0.68),
-              ),
-              DownloadsImageWidget(
-                image: images[2],
-                margin: EdgeInsets.only(left: 0),
-                size: Size(size.width * 0.4, size.width * 0.68),
-              )
-            ],
-          ),
-        ),
+            width: size.width,
+            height: size.width,
+            child: FutureBuilder(
+                future: popularForDownloads(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<Result>> snapshot) {
+                  return snapshot.hasData
+                      ? Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            CircleAvatar(
+                              radius: size.width * 0.43,
+                              backgroundColor: Colors.grey.withOpacity(0.5),
+                            ),
+                            DownloadsImageWidget(
+                              image:
+                                  "${imgBaseUrl}${snapshot.data![1].posterPath}",
+                              margin: EdgeInsets.only(left: 130),
+                              angle: 20,
+                              size: Size(size.width * 0.4, size.width * 0.68),
+                            ),
+                            DownloadsImageWidget(
+                              image:
+                                  "${imgBaseUrl}${snapshot.data![2].posterPath}",
+                              margin: EdgeInsets.only(right: 130),
+                              angle: -20,
+                              size: Size(size.width * 0.4, size.width * 0.68),
+                            ),
+                            DownloadsImageWidget(
+                              image:
+                                  "${imgBaseUrl}${snapshot.data![3].posterPath}",
+                              margin: EdgeInsets.only(left: 0),
+                              size: Size(size.width * 0.4, size.width * 0.68),
+                            )
+                          ],
+                        )
+                      : Center(
+                          child: CircularProgressIndicator(
+                            color: kRedColor,
+                          ),
+                        );
+                })),
       ],
     );
   }
@@ -173,7 +186,11 @@ class DownloadsImageWidget extends StatelessWidget {
           height: size.height,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            image: DecorationImage(fit: BoxFit.cover, image: AssetImage(image)),
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: NetworkImage(
+                  image,
+                )),
           )),
     );
   }

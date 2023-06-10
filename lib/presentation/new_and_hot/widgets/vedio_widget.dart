@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:netflix_demo/core/api_constant.dart';
 import 'package:netflix_demo/core/colors/colors.dart';
 import 'package:netflix_demo/core/constansts/contsands.dart';
 
 class VedioWidget extends StatelessWidget {
-  const VedioWidget({
-    super.key,
-  });
-
+  VedioWidget({super.key, required this.imgPth});
+  String? imgPth;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -15,7 +14,7 @@ class VedioWidget extends StatelessWidget {
           width: double.infinity,
           height: 200,
           child: Image.network(
-            newandHotImgUrl,
+            "${imgBaseUrl}${imgPth}",
             fit: BoxFit.fill,
           ),
         ),

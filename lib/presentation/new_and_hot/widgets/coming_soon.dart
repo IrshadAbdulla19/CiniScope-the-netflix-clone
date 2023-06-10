@@ -5,12 +5,38 @@ import 'package:netflix_demo/presentation/home/widgats/custom_button.dart';
 import 'package:netflix_demo/presentation/new_and_hot/widgets/vedio_widget.dart';
 
 class ComingSoonMainWidget extends StatelessWidget {
-  const ComingSoonMainWidget({
-    super.key,
-  });
+  ComingSoonMainWidget(
+      {super.key,
+      required this.date,
+      required this.content,
+      required this.titile,
+      required this.imgPath});
+  String? date;
+  String? titile;
+  String? content;
+  String? imgPath;
+
+  String mnth = '';
+  String day = '';
+  String? one;
+  String? ten;
 
   @override
   Widget build(BuildContext context) {
+    if (date != null) {
+      one = date?[5];
+      ten = date?[6];
+      mnth = "${one}${ten}";
+    } else {
+      mnth = '12';
+    }
+    if (date != null) {
+      one = date?[8];
+      ten = date?[9];
+      day = "${one}${ten}";
+    } else {
+      mnth = '24';
+    }
     Size size = MediaQuery.of(context).size;
     return Row(
       children: [
@@ -23,11 +49,11 @@ class ComingSoonMainWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'FEB',
+                mnth,
                 style: TextStyle(fontSize: 16),
               ),
               Text(
-                '11',
+                day,
                 style: TextStyle(
                     fontSize: 30,
                     letterSpacing: 4,
@@ -42,17 +68,21 @@ class ComingSoonMainWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              VedioWidget(),
+              VedioWidget(
+                imgPth: imgPath,
+              ),
               Row(
                 children: [
-                  Text(
-                    'TALL GIRL 2',
-                    style: TextStyle(
-                      fontSize: 37,
-                      fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Text(
+                      titile ?? "Movie Name",
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 37,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  Spacer(),
                   Row(
                     children: [
                       CoustomButtonWidget(
@@ -72,13 +102,14 @@ class ComingSoonMainWidget extends StatelessWidget {
                   )
                 ],
               ),
-              Text('Coming on Friday'),
               kheight,
-              Text('Tall Girl2',
+              Text(titile ?? "Movie name",
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
               kheight,
               Text(
-                "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.",
+                content ??
+                    "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.",
+                maxLines: 8,
                 style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
