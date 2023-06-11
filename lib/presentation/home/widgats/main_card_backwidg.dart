@@ -51,9 +51,13 @@ class MainCardBackWidget extends StatelessWidget {
                   )
                 ],
               )
-            : Center(
-                child: CircularProgressIndicator(
-                  color: kRedColor,
+            : Container(
+                height: 780,
+                width: double.infinity,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: kRedColor,
+                  ),
                 ),
               );
       },

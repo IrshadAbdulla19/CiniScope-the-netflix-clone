@@ -74,7 +74,9 @@ class HomePage extends StatelessWidget {
                                       Container(
                                         width: 30,
                                         height: 30,
-                                        color: Colors.blue,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: NetworkImage(userImg))),
                                       ),
                                       kWidth
                                     ],

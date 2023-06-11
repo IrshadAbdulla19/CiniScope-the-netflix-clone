@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:netflix_demo/core/api_constant.dart';
-import 'package:netflix_demo/core/colors/colors.dart';
-import 'package:netflix_demo/core/constansts/contsands.dart';
 
 import 'package:netflix_demo/domain/search/search_api.dart';
-import 'package:netflix_demo/presentation/search/widgets/top_titile.dart';
-
-import '../../../domain/search/for_search/result.dart';
 
 class SearchResultWidget extends StatefulWidget {
   SearchResultWidget({super.key, required this.searchText});
@@ -18,41 +13,43 @@ class SearchResultWidget extends StatefulWidget {
 class _SearchResultWidgetState extends State<SearchResultWidget> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        TopTextWidget(titile: 'Movie & TV'),
-        kheight,
-        Expanded(
-            child: GridView.count(
-          crossAxisCount: 3,
-          shrinkWrap: true,
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          childAspectRatio: 1 / 1.4,
-          children: [
-            FutureBuilder(
-              future: searchImageGet(widget.searchText),
-              builder:
-                  (BuildContext context, AsyncSnapshot<List<Result>> snapshot) {
-                return snapshot.hasData
-                    ? ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return MainCard(
-                              image:
-                                  "${imgBaseUrl}${snapshot.data![index].posterPath}");
-                        })
-                    : Center(
-                        child: CircularProgressIndicator(
-                          color: kRedColor,
-                        ),
-                      );
-              },
-            )
-          ],
-        ))
-      ],
+    return FutureBuilder(
+      future: searchImageGet(widget.searchText),
+      builder: (context, snapshot) {
+        return snapshot.data != null && snapshot.data!.isNotEmpty
+            ? GridView.builder(
+                itemCount: snapshot.data!.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    mainAxisExtent: 220,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8),
+                itemBuilder: (context, index) {
+                  String? imagepath = snapshot.data?[index].posterPath;
+                  return snapshot.hasData
+                      ? Container(
+                          height: 80,
+                          width: 200,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                      '$imgBaseUrl${(imagepath == null ? "/7syc6DmjSeUSNp4VSGELfHQW17Q.jpg" : imagepath)}'),
+                                  fit: BoxFit.cover)),
+                        )
+                      : const Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.red,
+                          ),
+                        );
+                },
+              )
+            : const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.red,
+                ),
+              );
+      },
     );
   }
 }

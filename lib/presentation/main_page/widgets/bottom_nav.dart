@@ -24,12 +24,14 @@ class BottomNavigatonWidget extends StatelessWidget {
             items: const [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.collections), label: 'home'),
+                  icon: Icon(Icons.collections), label: 'New & hot'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.emoji_emotions), label: 'home'),
-              BottomNavigationBarItem(icon: Icon(Icons.search), label: 'home'),
+                  icon: Icon(Icons.emoji_emotions), label: 'Fast Laugh'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.download_for_offline_sharp), label: 'home'),
+                  icon: Icon(Icons.search), label: 'Search'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.download_for_offline_sharp),
+                  label: 'Downloads'),
             ],
           );
         });

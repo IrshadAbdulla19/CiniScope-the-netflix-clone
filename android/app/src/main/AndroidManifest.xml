@@ -2,7 +2,7 @@
     package="com.example.netflix_demo">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="netflix_demo"
+        android:label="Netflix"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -18,3 +18,6 @@ String newandHotImgUrl3 =
 const kheight50 = SizedBox(
   height: 50,
 );
+
+String userImg =
+    "https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png";
